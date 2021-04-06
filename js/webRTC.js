@@ -219,9 +219,6 @@ var rec = () => {
           document.getElementById("loadPuropuse").style.display = "none";
         })();
       });
-
-      document.getElementById("localVideo").srcObject = ls;
-      document.getElementById("remoteVideo").srcObject = rs;
     })();
   }
 };
