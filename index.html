@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Realcom</title>
+
+    <!-- css -->
+    <link rel="stylesheet" href="css/animate.css" />
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- script -->
+    <script defer src="js/jquery.js"></script>
+    <script defer src="js/webRTC.js"></script>
+  </head>
+  <body style="background: #252525">
+    <div id="upDiv">
+      <button onclick="receive()">Receive</button
+      ><button onclick="call()">Call</button>
+    </div>
+
+    <div id="chatBox">
+      <div>
+        <video id="localVideo" autoplay></video>
+      </div>
+
+      <div>
+        <video id="remoteVideo" autoplay></video>
+      </div>
+    </div>
+
+    <div id="recDiv">
+      <input type="text" id="recTXT" />
+      <button onclick="rec()">Receive</button>
+    </div>
+
+    <div id="TXTareaDiv" style="padding: 10px 0">
+      <p id="wrapP">
+        <span style="color: rgb(0, 0, 0);font-weight: 500;padding: 0 0 10px 0;">Your ID:</span>
+
+        <input type="text" style="color: rgb(0, 4, 255); font-weight: 500;font-size: large;" id="TXTarea" value=""></input>
+      </p>
+    </div>
+
+    <div id="loadPuropuse" style="display: none">
+      <div class="dots">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+
+    <!-- on/offline -->
+    <script>
+      var online = window.navigator.onLine;
+
+      if (!online) {
+        document.body.innerHTML =
+          "<h2 style='width:100vw;position:absolute;top:50%;padding:0 10px;transform: translateY(-50%);color:#de0200;text-align:center;padding:20px;'>You are currently offline!</h2>";
+      }
+    </script>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      var firebaseConfig = {
+        apiKey: "AIzaSyBynMKEU9TAuHcwecV7v3Q0dke65RtuP84",
+        authDomain: "realcom-adc41.firebaseapp.com",
+        projectId: "realcom-adc41",
+        storageBucket: "realcom-adc41.appspot.com",
+        messagingSenderId: "594676543872",
+        appId: "1:594676543872:web:ba0d1b8d7195d869405165",
+        measurementId: "G-PREYV7Q6ZP",
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+
+      const db = firebase.firestore();
+
+      const deleteTime = 0; //minutes
+
+      db.collection("users")
+        .get()
+        .then((data) => {
+          data.docs.forEach((doc) => {
+            var mainId = doc.id;
+
+            loddedInPastTime = Math.floor(
+              (Math.floor(new Date().getTime() / 1000) -
+                doc.data().date.seconds) /
+                60
+            );
+
+            if (loddedInPastTime > deleteTime) {
+              db.collection("users").doc(mainId).delete();
+
+              db.collection(mainId)
+                .get()
+                .then((data) => {
+                  data.docs.forEach((doc) => {
+                    db.collection(mainId).doc(doc.id).delete();
+                  });
+                });
+            }
+          });
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,155 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  z-index: 1;
+}
+
+#chatBox {
+  position: relative;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+}
+
+#chatBox div {
+  display: flex;
+  position: relative;
+}
+
+#chatBox div:nth-child(1) {
+  z-index: 3;
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+
+#chatBox div:nth-child(1) video {
+  height: 125px;
+}
+
+#chatBox div:nth-child(2) video {
+  width: 100vw;
+  height: 100vh;
+}
+
+#chatBox div:nth-child(2) {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  align-items: center;
+}
+
+#localVideo,
+#remoteVideo {
+  position: relative;
+  z-index: 2;
+}
+
+/*-------------------------------------------*/
+#upDiv {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  background-color: rgb(29, 29, 29);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+#upDiv button {
+  background-color: rgb(42, 105, 221);
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  transition: background-color 150ms ease-in-out;
+}
+#wrapP {
+  display: flex;
+  padding: 10px;
+  flex-direction: column;
+}
+
+#upDiv button:hover {
+  background-color: rgb(24, 77, 175);
+}
+
+* button {
+  padding: 10px 30px;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 10px;
+  cursor: pointer;
+}
+
+* input {
+  padding: 5px;
+}
+
+textarea {
+  padding: 5px;
+  width: 90%;
+}
+
+#recDiv,
+#conDiv,
+#TXTareaDiv {
+  width: 100%;
+  background-color: rgb(0, 140, 255);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+#loadPuropuse {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.918);
+  z-index: 3;
+}
+
+.dots .dot {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin: 0 15px;
+  border-radius: 50%;
+  background: rgb(0, 204, 255);
+  -webkit-animation: dot-dot-dot 1.4s linear infinite;
+  animation: dot-dot-dot 1.4s linear infinite;
+}
+.dots .dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.dots .dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+@keyframes dot-dot-dot {
+  0%,
+  100%,
+  60% {
+    -webkit-transform: initial;
+    -ms-transform: initial;
+    transform: initial;
+  }
+  30% {
+    -webkit-transform: translateY(-25px);
+    -ms-transform: translateY(-25px);
+    transform: translateY(-25px);
+  }
+}
