@@ -69,6 +69,9 @@ var call = () => {
         document
           .querySelector("#wrapP button")
           .setAttribute("onclick", "copyText()");
+        document
+          .querySelector("#wrapP button")
+          .setAttribute("id", "copyTextBTn1");
 
         updateId.update({
           id: docRef.id,
@@ -119,6 +122,9 @@ var call = () => {
 
     document.getElementById("localVideo").muted = true;
     document.getElementById("loadPuropuse").style.display = "none";
+    setTimeout(() => {
+      $("#copyTextBTn1").addClass("animate__animated animate__shakeX");
+    }, 10);
   })();
 };
 
@@ -228,7 +234,11 @@ var copyText = () => {
   copyText.select();
 
   document.execCommand("copy");
-  alert("ID Copied!");
+  $("#copyTextBTn1").removeClass("animate__animated animate__shakeX");
+  $("#copyTextBTn1").removeClass("animate__animated animate__rubberBand");
+  setTimeout(() => {
+    $("#copyTextBTn1").addClass("animate__animated animate__rubberBand");
+  }, 10);
 };
 
 dc.onopen = (e) => {

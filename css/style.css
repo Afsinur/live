@@ -123,6 +123,15 @@ textarea {
   z-index: 3;
 }
 
+#copyTextBTn1 {
+  background-color: deeppink;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.829);
+}
+
 .dots .dot {
   display: inline-block;
   width: 30px;
