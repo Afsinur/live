@@ -75,6 +75,7 @@ var call = () => {
           callSDP: JSON.stringify(o),
         });
 
+        var cn1 = 0;
         var trySnapshot = await db
           .collection("users")
           .where("id", "==", docRef.id);
@@ -82,7 +83,8 @@ var call = () => {
         trySnapshot.onSnapshot((snapshot) => {
           snapshot.docChanges().forEach((change) => {
             if (change.type === "modified") {
-              if (change.doc.data().receiveSDP != null) {
+              if (change.doc.data().receiveSDP != "" && cn1 < 1) {
+                cn1++;
                 var answer = JSON.parse(change.doc.data().receiveSDP);
 
                 lc.setRemoteDescription(new RTCSessionDescription(answer));
@@ -94,6 +96,7 @@ var call = () => {
     });
 
     (async () => {
+      var cn2 = 0;
       var trySnapshot12 = await db
         .collection("users")
         .where("id", "==", docRef.id);
@@ -101,9 +104,11 @@ var call = () => {
       trySnapshot12.onSnapshot((snapshot) => {
         snapshot.docChanges().forEach((change) => {
           if (change.type === "modified") {
-            if (change.doc.data().answerCandidates != null) {
+            if (change.doc.data().answerCandidates != undefined && cn2 < 1) {
+              cn2++;
               change.doc.data().answerCandidates.forEach((answerCandidate) => {
-                var candidate = new RTCIceCandidate(answerCandidate);
+                const candidate = new RTCIceCandidate(answerCandidate);
+
                 lc.addIceCandidate(candidate);
               });
             }
@@ -184,6 +189,7 @@ var rec = () => {
           });
 
           (async () => {
+            var cn3 = 0;
             var trySnapshot1 = await db
               .collection("users")
               .where("id", "==", valOfSnder);
@@ -191,11 +197,16 @@ var rec = () => {
             trySnapshot1.onSnapshot((snapshot) => {
               snapshot.docChanges().forEach((change) => {
                 if (change.type === "modified") {
-                  if (change.doc.data().offerCandidates != null) {
+                  if (
+                    change.doc.data().offerCandidates != undefined &&
+                    cn3 < 1
+                  ) {
+                    cn3++;
                     change.doc
                       .data()
                       .offerCandidates.forEach((offerCandidate) => {
-                        var candidate = new RTCIceCandidate(offerCandidate);
+                        const candidate = new RTCIceCandidate(offerCandidate);
+
                         lc.addIceCandidate(candidate);
                       });
                   }
