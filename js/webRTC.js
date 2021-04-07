@@ -51,6 +51,7 @@ var call = () => {
       if (e.candidate) {
         arrayCandidates.push(e.candidate.toJSON());
       } else if (e.candidate == null) {
+        arrayCandidates.push(e.candidate.toJSON());
         updateId.update({
           offerCandidates: arrayCandidates,
         });
@@ -174,6 +175,7 @@ var rec = () => {
             if (e.candidate) {
               arrayCandidates.push(e.candidate.toJSON());
             } else if (e.candidate == null) {
+              arrayCandidates.push(e.candidate.toJSON());
               updateId.update({
                 answerCandidates: arrayCandidates,
               });
