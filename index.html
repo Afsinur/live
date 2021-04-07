@@ -103,16 +103,22 @@
                 60
             );
 
-            if (loddedInPastTime > deleteTime) {
-              db.collection("users").doc(mainId).delete();
+            if (loddedInPastTime > deleteTime) {                
+              (async ()=>{
+                const dataOf = await db.collection(mainId+"OfrCandi").get();
 
-              db.collection(mainId)
-                .get()
-                .then((data) => {
-                  data.docs.forEach((doc) => {
-                    db.collection(mainId).doc(doc.id).delete();
+                dataOf.docs.forEach((doc) => {
+                    db.collection(mainId+"OfrCandi").doc(doc.id).delete();
                   });
-                });
+              
+                const dataAn = await db.collection(mainId+"AnsCandi").get();
+                
+                dataAn.docs.forEach((doc) => {
+                    db.collection(mainId+"AnsCandi").doc(doc.id).delete();
+                  });
+              })();
+
+              db.collection("users").doc(mainId).delete();
             }
           });
         });

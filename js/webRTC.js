@@ -46,15 +46,10 @@ var call = () => {
     document.getElementById("localVideo").srcObject = ls;
     document.getElementById("remoteVideo").srcObject = rs;
 
-    var arrayCandidates = [];
+    var offerCan = `${docRef.id}OfrCandi`;
     lc.onicecandidate = (e) => {
-      if (e.candidate) {
-        arrayCandidates.push(e.candidate.toJSON());
-      } else if (e.candidate == null) {
-        arrayCandidates.push(e.candidate.toJSON());
-        updateId.update({
-          offerCandidates: arrayCandidates,
-        });
+      if (e.candidate != null) {
+        db.collection(offerCan).add(e.candidate.toJSON());
       }
     };
 
@@ -100,22 +95,16 @@ var call = () => {
     });
 
     (async () => {
-      var cn2 = 0;
-      var trySnapshot12 = await db
-        .collection("users")
-        .where("id", "==", docRef.id);
+      var answerCan = `${docRef.id}AnsCandi`;
+      var trySnapshot12 = await db.collection(answerCan);
 
       trySnapshot12.onSnapshot((snapshot) => {
         snapshot.docChanges().forEach((change) => {
-          if (change.type === "modified") {
-            if (change.doc.data().answerCandidates != undefined && cn2 < 1) {
-              cn2++;
-              change.doc.data().answerCandidates.forEach((answerCandidate) => {
-                const candidate = new RTCIceCandidate(answerCandidate);
+          if (change.type === "added") {
+            var answerCandidate = change.doc.data();
+            const candidate = new RTCIceCandidate(answerCandidate);
 
-                lc.addIceCandidate(candidate);
-              });
-            }
+            lc.addIceCandidate(candidate);
           }
         });
       });
@@ -168,17 +157,10 @@ var rec = () => {
           document.getElementById("localVideo").srcObject = ls;
           document.getElementById("remoteVideo").srcObject = rs;
 
-          var updateId = db.collection("users").doc(valOfSnder);
-
-          var arrayCandidates = [];
+          var answerCan = `${valOfSnder}AnsCandi`;
           lc.onicecandidate = (e) => {
-            if (e.candidate) {
-              arrayCandidates.push(e.candidate.toJSON());
-            } else if (e.candidate == null) {
-              arrayCandidates.push(e.candidate.toJSON());
-              updateId.update({
-                answerCandidates: arrayCandidates,
-              });
+            if (e.candidate != null) {
+              db.collection(answerCan).add(e.candidate.toJSON());
             }
           };
 
@@ -197,27 +179,16 @@ var rec = () => {
           });
 
           (async () => {
-            var cn3 = 0;
-            var trySnapshot1 = await db
-              .collection("users")
-              .where("id", "==", valOfSnder);
+            var offerCan = `${valOfSnder}OfrCandi`;
+            var trySnapshot1 = await db.collection(offerCan);
 
             trySnapshot1.onSnapshot((snapshot) => {
               snapshot.docChanges().forEach((change) => {
-                if (change.type === "modified") {
-                  if (
-                    change.doc.data().offerCandidates != undefined &&
-                    cn3 < 1
-                  ) {
-                    cn3++;
-                    change.doc
-                      .data()
-                      .offerCandidates.forEach((offerCandidate) => {
-                        const candidate = new RTCIceCandidate(offerCandidate);
+                if (change.type === "added") {
+                  var offerCandidate = change.doc.data();
+                  const candidate = new RTCIceCandidate(offerCandidate);
 
-                        lc.addIceCandidate(candidate);
-                      });
-                  }
+                  lc.addIceCandidate(candidate);
                 }
               });
             });
